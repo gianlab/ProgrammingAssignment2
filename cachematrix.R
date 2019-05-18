@@ -36,7 +36,7 @@ makeCacheMatrix <- function(X =matrix()){
     if(isInvertibleMatrix(Y)) {
       X <<- Y
       inv <<-NULL
-    }
+    } 
   }
   get <- function() {
     if(isInvertibleMatrix(X)) X
@@ -77,5 +77,56 @@ cacheSolve <- function(X){
 }
 
 
+# > lis <-makeCacheMatrix(matrix(c(1,2,1,2),nrow = 2,ncol = 2))
+# > lis$get()
+# matrix is not invertible
+
+# > lis$getInvMatrix()
+# > lis$setInvMatrix()
+# matrix is not invertible
+
+# > lis$set(matrix(c(1,2,1,2,3,4),nrow = 3,ncol = 2))
+# matrix is not square
+
+# > lis$get()
+# matrix is not invertible
+# > lis$getInvMatrix()
+# > lis$setInvMatrix()
+# matrix is not invertible
+
+# > lis$set(matrix(c(1,2,3,4),nrow = 2,ncol = 2))
+# > lis$get()
+# [,1] [,2]
+# [1,]    1    3
+# [2,]    2    4
+# > lis$getInvMatrix()
+# > lis$setInvMatrix()
+# [1] "I cache inverse of "
+# [,1] [,2]
+# [1,]    1    3
+# [2,]    2    4
+
+# > cacheSolve(lis)
+# get cached matrix
+# [,1] [,2]
+# [1,]   -2  1.5
+# [2,]    1 -0.5
+# > lis$set(matrix(c(1,2,3,4),nrow = 2,ncol = 2))
+# > lis$get()
+# [,1] [,2]
+# [1,]    1    3
+# [2,]    2    4
+# > lis$getInvMatrix()
+
+# > cacheSolve(lis)
+# [1] "I cache inverse of "
+# [,1] [,2]
+# [1,]    1    3
+# [2,]    2    4
+# [1] "Inverse of matrix is:"
+# [,1] [,2]
+# [1,]   -2  1.5
+# [2,]    1 -0.5
+# > 
 
 
