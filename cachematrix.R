@@ -3,13 +3,79 @@
 
 ## Write a short comment describing this function
 
-makeCacheMatrix <- function(x = matrix()) {
+## This function returns TRUE if the argument being passed is an
+#invertible matrix, otherwise returns FALSE and an error message
+#concerning the reason why the argument is not an invertible matrix.
 
+isInvertibleMatrix <- function(X){
+  
+  if(!is.matrix(X)) {
+    message('arg is not a matrix')
+    return(FALSE)
+  } else if (nrow(X)!=ncol(X)) {
+    message('matrix is not square')
+    return(FALSE)
+  } else if (is.na(det(X))) {
+    message('matrix is empty')
+    return(FALSE)
+  } else if (det(X)==0) {
+    message('matrix is not invertible')
+    return(FALSE)
+  } else return(TRUE) 
+  
 }
 
+# This function returns a list of 4 functions: set, get, setInvMatrix, gewtInvMatrix. 
+# set sets an invertible matrix Y in the cache, get returns this matrix, 
+# setInvMatrix sets the matrix inverse of Y in the cache, 
+# gewtInvMatrix returns this matrix.
+
+makeCacheMatrix <- function(X =matrix()){
+  inv <- NULL
+  set <- function(Y=matrix()){
+    if(isInvertibleMatrix(Y)) {
+      X <<- Y
+      inv <<-NULL
+    }
+  }
+  get <- function() {
+    if(isInvertibleMatrix(X)) X
+  } 
+  setInvMatrix <- function(){
+    if(isInvertibleMatrix(X)) { 
+      inv <<- solve(X)
+      print("I cache inverse of ")
+      print(X)
+    }
+  } 
+  getInvMatrix <- function() {
+    if(!is.null(inv))  inv
+    
+  }  
+  list(set=set, get=get,setInvMatrix=setInvMatrix,getInvMatrix=getInvMatrix)
+}
 
 ## Write a short comment describing this function
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+# This function computes the inverse of the special "matrix" returned by
+# makeCacheMatrix above. If the inverse has already been calculated 
+#(and the matrix has not changed), then the cacheSolve retrieve 
+# the inverse from the cache, otherwise it calculates the inverse of the matrix, 
+# puts it in the cache and displays it
+
+
+cacheSolve <- function(X){
+  inv <- X$getInvMatrix()
+  if(!is.null(inv)){
+    message("get cached matrix")
+    return(inv)
+  }
+  X$setInvMatrix()
+  print("Inverse of matrix is:")
+  X$getInvMatrix()
+  
 }
+
+
+
+
